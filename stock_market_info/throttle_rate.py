@@ -9,7 +9,7 @@ class TenPerMinuteThrottle(UserRateThrottle):
     rate = '10/min'
 
 
-class OneThousandPerHourThrottle(UserRateThrottle):
+class OneTHoundredPerHourThrottle(UserRateThrottle):
     rate = '100/hour'
 
 

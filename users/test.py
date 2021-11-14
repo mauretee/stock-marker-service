@@ -9,7 +9,7 @@ class AccountTests(APITestCase):
         Ensure we can create a new account object.
         """
         data = {'email': 'mauro@gmail.com', 'first_name': 'Mauro', 'last_name': 'Lopez'}
-        response = self.client.post('/users/', data, format='json')
+        response = self.client.post('/api/users/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIsNotNone(response.data['key'])
         self.assertEqual(CustomUser.objects.count(), 1)

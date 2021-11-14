@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
+import logging.config
 
 
 AUTH_USER_MODEL = 'users.CustomUser'
@@ -28,7 +29,7 @@ SECRET_KEY = 'django-insecure-p=7g(g^-z5_bi0gx%x-w^3!l34#cl^7!^$m)ay*5#=vy5yi*sw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -44,11 +45,13 @@ INSTALLED_APPS = [
     'users',
     'rest_framework',
     'rest_framework_api_key',
+    'stock_market_info',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'stock_market_info.middleware.log_api_call.ApiRequestLogMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -147,3 +150,28 @@ REST_FRAMEWORK = {
 AUTHENTICATION_BACKENDS = [
     'users.auth_backend.ApiKeyAuthBackend'
 ]
+
+
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'file': {
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+        }
+    },
+    'handlers': {
+        'api': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'file',
+            'filename': '/tmp/api.log'
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'INFO',
+            'handlers': ['api']
+        },
+    }
+})

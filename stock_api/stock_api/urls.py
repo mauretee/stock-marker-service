@@ -20,6 +20,6 @@ from stock_market_info.views import get_market_info
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', CustomUserCreateAPI.as_view(), name='create_user'),
-    path('market/<str:symbol>', get_market_info, name='get_market_info')
+    path('api/users/', CustomUserCreateAPI.as_view(), name='create_user'),
+    path('api/market/<str:symbol>', get_market_info, name='get_market_info')
 ]

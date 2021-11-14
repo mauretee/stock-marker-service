@@ -9,9 +9,11 @@ class AccountTests(APITestCase):
         Ensure we can create a new account object.
         """
         data = {'email': 'mauro@gmail.com', 'first_name': 'Mauro', 'last_name': 'Lopez'}
-        response = self.client.post('/users/', data, format='json')
+        response = self.client.post('/api/users/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         key = response.data['key']
         self.client.credentials(HTTP_AUTHORIZATION='Api-Key ' + key)
-        response = self.client.get('/market/FB', format='json')
+        response = self.client.get('/api/market/FB', format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['user'], 'mauro@gmail.com')
+        self.assertIsNotNone(response.data['data'])
