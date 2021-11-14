@@ -143,3 +143,7 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     # ]
 }
+
+AUTHENTICATION_BACKENDS = [
+    'users.auth_backend.ApiKeyAuthBackend'
+]
