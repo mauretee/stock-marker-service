@@ -15,4 +15,3 @@ class AccountTests(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION='Api-Key ' + key)
         response = self.client.get('/market/FB', format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        import pdb; pdb.set_trace()

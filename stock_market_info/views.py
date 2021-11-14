@@ -3,8 +3,11 @@ import requests
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import api_view, permission_classes, \
+    authentication_classes, throttle_classes
 from users.authentication import ApiKeyAuthentication
+from .throttle_rate import OncePerSecondThrottle, TenPerMinuteThrottle, \
+    OneThousandPerHourThrottle, OneThousandPerDayThrottle
 
 
 def get_alphavantage_url(symbol):
@@ -15,6 +18,8 @@ def get_alphavantage_url(symbol):
 @api_view(['GET'])
 @permission_classes([HasAPIKey])
 @authentication_classes([ApiKeyAuthentication])
+@throttle_classes([OncePerSecondThrottle, TenPerMinuteThrottle, OneThousandPerHourThrottle, 
+    OneThousandPerDayThrottle])
 def get_market_info(request, symbol):
     url = get_alphavantage_url(symbol)
     r = requests.get(url)
